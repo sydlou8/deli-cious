@@ -38,11 +38,8 @@ public class DeliApp {
         }
     }
 
-    // TOO BIG: Separate this into different methods
     private Sandwich handleNewSandwich() {
-        // getSandwichSize
         int size = handleSize();
-        // getSandwichScreen
         String bread = handleBread();
 
         PremiumTopping meat = handleMeatChoice();
@@ -50,7 +47,6 @@ public class DeliApp {
         HashSet<Topping> regularToppings = handleRegularToppings();
         HashSet<Topping> sauces = handleSauces();
         HashSet<Topping> sides = handleSides();
-        // getSauces
 
         HashSet<Topping> allToppings = new HashSet<>();
         allToppings.add(meat);
