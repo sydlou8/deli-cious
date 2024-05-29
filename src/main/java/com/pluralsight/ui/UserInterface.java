@@ -1,18 +1,21 @@
 package com.pluralsight.ui;
 
+import com.pluralsight.models.Customer;
 import com.pluralsight.ui.enumerations.*;
 import java.util.Scanner;
 
 public class UserInterface {
     private Scanner userInput = new Scanner(System.in);
+
     private void err() {
         System.out.println("Invalid Choice. Try again.");
     }
+
     public OrderChoice getMainMenu() {
         while(true) {
             System.out.print(
                     "=".repeat(50) + "\n" +
-                    " ".repeat(14) + "Welcome to DELI-cious!" + "/n" +
+                    " ".repeat(14) + "Welcome to DELI-cious!" + "\n" +
                     "=".repeat(50) + "\n" +
                     """
                     Please make a selection:
@@ -37,7 +40,7 @@ public class UserInterface {
         while(true) {
             System.out.print(
                     "=".repeat(50) + "\n" +
-                    " ".repeat(20) + "Order Menu" + "/n" +
+                    " ".repeat(20) + "Order Menu" + "\n" +
                     "=".repeat(50) + "\n" +
                     """
                     Please make a selection:
@@ -67,7 +70,7 @@ public class UserInterface {
         while(true) {
             System.out.print(
                     "=".repeat(50) + "\n" +
-                    " ".repeat(15) + "Build Your Sandwich!" + "/n" +
+                    " ".repeat(15) + "Build Your Sandwich!" + "\n" +
                     "=".repeat(50) + "\n" +
                     """
                     Please make a BREAD selection:
@@ -95,7 +98,7 @@ public class UserInterface {
         while(true) {
             System.out.print(
                     "=".repeat(50) + "\n" +
-                    " ".repeat(15) + "Build Your Sandwich!" + "/n" +
+                    " ".repeat(15) + "Build Your Sandwich!" + "\n" +
                     "=".repeat(50) + "\n" +
                     """
                     Please make a SIZE selection:
@@ -117,12 +120,33 @@ public class UserInterface {
             }
         }
     }
+    public boolean getIsToasted() {
+        while (true){
+            System.out.print(
+                    """
+                            Would you like your Sandwich Toasted:
+                            \t[1] - Yes
+                            \t[2] - No
+                            """);
+            try {
+                System.out.print("Your Selection: ");
+                int choice = Integer.parseInt(userInput.nextLine().strip());
+                return switch (choice) {
+                    case 1 -> true;
+                    case 2 -> false;
+                    default -> throw new IllegalStateException("Unexpected value: " + choice);
+                };
+            } catch (Exception _) {
+                System.out.println("Invalid Choice: Try again.");
+            }
+        }
+    }
 
     public ToppingChoice getRegularTopping() {
         while(true) {
             System.out.print(
                     "=".repeat(50) + "\n" +
-                    " ".repeat(15) + "Build Your Sandwich!" + "/n" +
+                    " ".repeat(15) + "Build Your Sandwich!" + "\n" +
                     "=".repeat(50) + "\n" +
                     """
                     Please make a BREAD selection:
@@ -164,7 +188,7 @@ public class UserInterface {
         while(true) {
             System.out.print(
                     "=".repeat(50) + "\n" +
-                    " ".repeat(12) + "Build Your Sandwich: Meat!" + "/n" +
+                    " ".repeat(12) + "Build Your Sandwich: Meat!" + "\n" +
                     "=".repeat(50) + "\n" +
                     """
                     Please make a MEAT selection:
@@ -196,7 +220,7 @@ public class UserInterface {
         while(true) {
             System.out.print(
                     "-".repeat(50) + "\n" +
-                    " ".repeat(11) + "Build Your Sandwich: Cheese!" + "/n" +
+                    " ".repeat(11) + "Build Your Sandwich: Cheese!" + "\n" +
                     "-".repeat(50) + "\n" +
                     """
                     Please make a CHEESE selection:
@@ -224,7 +248,7 @@ public class UserInterface {
         while(true) {
             System.out.print(
                     "=".repeat(50) + "\n" +
-                    " ".repeat(11) + "Build Your Sandwich: Sauces!" + "/n" +
+                    " ".repeat(11) + "Build Your Sandwich: Sauces!" + "\n" +
                     "=".repeat(50) + "\n" +
                     """
                     Please make a SAUCE selection:
@@ -260,12 +284,14 @@ public class UserInterface {
         while(true) {
             System.out.print(
                     "-".repeat(50) + "\n" +
-                    " ".repeat(13) + "Build Your Sandwich: Side!" + "/n" +
+                    " ".repeat(13) + "Build Your Sandwich: Side!" + "\n" +
                     "-".repeat(50) + "\n" +
                     """
                     Please make a selection of what you want on the side:
                     \t[1] - Au Jus
                     \t[2] - Sauces
+                    \t[3] - None
+                    \t[4] - All
                     """);
             try {
                 System.out.print("Your Selection: ");
@@ -273,6 +299,8 @@ public class UserInterface {
                 return switch (choice) {
                     case 1 -> ToppingChoice.AuJus;
                     case 2 -> ToppingChoice.Sauces;
+                    case 3 -> ToppingChoice.None;
+                    case 4 -> ToppingChoice.All;
                     default -> throw new IllegalStateException("Unexpected value: " + choice);
                 };
             } catch (Exception _) {
@@ -292,11 +320,7 @@ public class UserInterface {
             try {
                 System.out.print("Your Selection: ");
                 int choice = Integer.parseInt(userInput.nextLine().strip());
-                return switch (choice) {
-                    case 1 -> true;
-                    case 2 -> false;
-                    default -> throw new IllegalStateException("Unexpected value: " + choice);
-                };
+                return choice == 1;
             } catch (Exception _) {
                 System.out.println("Invalid Choice: Try again.");
             }
@@ -313,30 +337,43 @@ public class UserInterface {
             try {
                 System.out.print("Your Selection: ");
                 int choice = Integer.parseInt(userInput.nextLine().strip());
-                return switch (choice) {
-                    case 1 -> true;
-                    case 2 -> false;
-                    default -> throw new IllegalStateException("Unexpected value: " + choice);
-                };
+                return choice == 1;
             } catch (Exception _) {
                 System.out.println("Invalid Choice: Try again.");
             }
         }
     }
 
-
-    public UserChoice getDrink() {
+    // add Drink Flavor
+    public boolean getDrink() {
         while(true) {
-            System.out.println(
+            System.out.print(
                     "-".repeat(50) + "\n" +
-                    "-".repeat(15) + "\n" +
+                    " ".repeat(15) + "Any Drinks?"+ "\n" +
                     "-".repeat(50) + "\n" +
                     """
                     Would you like a Drink?
+                    \t[1] - Yes
+                    \t[2] - No
+                    """
+            );
+            try {
+                System.out.print("Your Selection: ");
+                int choice = Integer.parseInt(userInput.nextLine().strip());
+                return choice == 1;
+            } catch (Exception _) {
+                System.out.println("Invalid Choice: Try again.");
+            }
+        }
+    }
+    public UserChoice getDrinkSize() {
+        while (true) {
+            System.out.print(
+                    """
+                    \nWhat size?
                     \t[1] - Small
                     \t[2] - Medium
                     \t[3] - Large
-                    \t[0] - No Drink
                     """
             );
             try {
@@ -346,7 +383,6 @@ public class UserInterface {
                     case 1 -> UserChoice.Small;
                     case 2 -> UserChoice.Medium;
                     case 3 -> UserChoice.Large;
-                    case 0 -> UserChoice.No;
                     default -> throw new IllegalStateException("Unexpected value: " + choice);
                 };
             } catch (Exception _) {
@@ -354,11 +390,39 @@ public class UserInterface {
             }
         }
     }
-    public UserChoice getChips() {
+    public DrinkChoice getDrinkFlavor() {
+        while (true) {
+            System.out.print(
+                    """
+                    \nWhat Drink?
+                    \t[1] - Cola
+                    \t[2] - Root Beer
+                    \t[3] - Orange
+                    \t[4] - Lemon Lime
+                    \t[5] - Ginger Ale
+                    """
+            );
+            try {
+                System.out.print("Your Selection: ");
+                int choice = Integer.parseInt(userInput.nextLine().strip());
+                return switch (choice) {
+                    case 1 -> DrinkChoice.Cola;
+                    case 2 -> DrinkChoice.RootBeer;
+                    case 3 -> DrinkChoice.Orange;
+                    case 4 -> DrinkChoice.LemonLime;
+                    case 5 -> DrinkChoice.GingerAle;
+                    default -> throw new IllegalStateException("Unexpected value: " + choice);
+                };
+            } catch (Exception _) {
+                System.out.println("Invalid Choice: Try again.");
+            }
+        }
+    }
+    public boolean getChips() {
         while(true) {
             System.out.print(
                     "-".repeat(50) + "\n" +
-                    " ".repeat(15) + "Build Your Sandwich!" + "/n" +
+                    " ".repeat(15) + "Build Your Sandwich!" + "\n" +
                     "-".repeat(50) + "\n" +
                     """
                     Would you like Chips:
@@ -368,9 +432,31 @@ public class UserInterface {
             try {
                 System.out.print("Your Selection: ");
                 int choice = Integer.parseInt(userInput.nextLine().strip());
+                return choice == 1;
+            } catch (Exception _) {
+                System.out.println("Invalid Choice: Try again.");
+            }
+        }
+    }
+    public ChipChoice getChipBrand() {
+        while (true) {
+            System.out.print(
+                    """
+                    \nWhat Chips?
+                    \t[1] - Lays
+                    \t[2] - Doritos
+                    \t[3] - SunChips
+                    \t[4] - KettleChips
+                    """
+            );
+            try {
+                System.out.print("Your Selection: ");
+                int choice = Integer.parseInt(userInput.nextLine().strip());
                 return switch (choice) {
-                    case 1 -> UserChoice.Yes;
-                    case 2 -> UserChoice.No;
+                    case 1 -> ChipChoice.Lays;
+                    case 2 -> ChipChoice.Doritos;
+                    case 3 -> ChipChoice.SunChips;
+                    case 4 -> ChipChoice.KettleChips;
                     default -> throw new IllegalStateException("Unexpected value: " + choice);
                 };
             } catch (Exception _) {
@@ -379,12 +465,13 @@ public class UserInterface {
         }
     }
 
-    public OrderChoice getCheckout() {
+    public OrderChoice getCheckout(Customer customer) {
         while(true) {
             System.out.print(
                     "-".repeat(50) + "\n" +
-                    " ".repeat(13) + "Checkout" + "/n" +
+                    " ".repeat(21) + "Checkout" + "\n" +
                     "-".repeat(50) + "\n" +
+                    customer.toString() + "\n" +
                     """
                     Complete or Cancel Order:
                     \t[1] - Confirm
@@ -398,6 +485,21 @@ public class UserInterface {
                     case 2 -> OrderChoice.CancelOrder;
                     default -> throw new IllegalStateException("Unexpected value: " + choice);
                 };
+            } catch (Exception _) {
+                System.out.println("Invalid Choice: Try again.");
+            }
+        }
+    }
+
+    public boolean continueChoice() {
+        while (true) {
+            System.out.println("Continue?");
+            System.out.println("\t[1] - Yes");
+            System.out.println("\t[2] - No");
+            System.out.print("Your Selection: ");
+            try {
+                int choice = Integer.parseInt(userInput.nextLine().strip());
+                return choice == 1;
             } catch (Exception _) {
                 System.out.println("Invalid Choice: Try again.");
             }

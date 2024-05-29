@@ -3,6 +3,7 @@ package com.pluralsight.application;
 import com.pluralsight.models.*;
 import com.pluralsight.models.addedExtras.*;
 import com.pluralsight.models.toppings.*;
+import com.pluralsight.services.Receiptify;
 import com.pluralsight.ui.UserInterface;
 import com.pluralsight.ui.enumerations.*;
 
@@ -28,20 +29,30 @@ public class DeliApp {
     }
 
     private void handleNewOrder() {
-        OrderChoice choice = ui.getOrderScreen();
-        switch (choice) {
-            case AddSandwich -> customer.addToOrder(handleNewSandwich());
-            case AddDrink -> customer.addToOrder(handleNewDrink());
-            case AddChips -> customer.addToOrder(handleNewChips());
-            case Checkout -> handleCheckout();
-            case CancelOrder -> handleCancelOrder();
+        while (true){
+            OrderChoice choice = ui.getOrderScreen();
+            switch (choice) {
+                case AddSandwich -> customer.addToOrder(handleNewSandwich());
+                case AddDrink -> customer.addToOrder(handleNewDrink());
+                case AddChips -> customer.addToOrder(handleNewChips());
+                case Checkout -> {
+                    handleCheckout();
+                    return;
+                }
+                case CancelOrder -> {
+                    handleCancelOrder();
+                    return;
+                }
+            }
+            if (!ui.continueChoice()) return;
         }
+
     }
 
     private Sandwich handleNewSandwich() {
-        int size = handleSize();
+        int size = handleSize(ui.getSandwichSize());
         String bread = handleBread();
-
+        boolean isToasted = handleIsToasted();
         PremiumTopping meat = handleMeatChoice();
         PremiumTopping cheese = handleCheeseChoice();
         HashSet<Topping> regularToppings = handleRegularToppings();
@@ -55,11 +66,10 @@ public class DeliApp {
         allToppings.addAll(sauces);
         allToppings.addAll(sides);
 
-        return new Sandwich(size, bread, allToppings);
+        return new Sandwich(size, bread, isToasted, allToppings);
     }
 
-    private int handleSize() {
-        UserChoice choice = ui.getSandwichSize();
+    private int handleSize(UserChoice choice) {
         return switch (choice) {
             case Small -> 1;
             case Medium -> 2;
@@ -78,15 +88,18 @@ public class DeliApp {
             default -> throw new IllegalStateException("Unexpected value: " + sandwichChoice);
         };
     }
+    private boolean handleIsToasted() {
+        return ui.getIsToasted();
+    }
     private PremiumTopping handleCheeseChoice() {
         ToppingChoice choice = ui.getCheese();
-        String cheese = "";
-        switch (choice) {
-            case American -> cheese = "American";
-            case Provolone -> cheese = "Provolone";
-            case Cheddar -> cheese = "Cheddar";
-            case Swiss -> cheese = "Swiss";
-        }
+        String cheese = switch (choice) {
+            case American -> "American";
+            case Provolone -> "Provolone";
+            case Cheddar -> "Cheddar";
+            case Swiss -> "Swiss";
+            default -> throw new IllegalStateException("Unexpected value: " + choice);
+        };
         // getIsExtra
         boolean isExtraCheese = ui.getIsExtra();
 
@@ -94,15 +107,15 @@ public class DeliApp {
     }
     private PremiumTopping handleMeatChoice() {
         ToppingChoice choice = ui.getMeat();
-        String meat = "";
-        switch (choice) {
-            case Steak -> meat = "Steak";
-            case Ham -> meat = "Ham";
-            case Salami -> meat = "Salami";
-            case RoastBeef -> meat = "Roast Beef";
-            case Chicken -> meat = "Chicken";
-            case Bacon -> meat = "Bacon";
-        }
+        String meat = switch (choice) {
+            case Steak -> "Steak";
+            case Ham -> "Ham";
+            case Salami -> "Salami";
+            case RoastBeef -> "Roast Beef";
+            case Chicken -> "Chicken";
+            case Bacon -> "Bacon";
+            default -> throw new IllegalStateException("Unexpected value: " + choice);
+        };
         // getIsExtra
         boolean isExtraMeat = ui.getIsExtra();
         return new PremiumTopping("Meat", meat, isExtraMeat);
@@ -110,31 +123,37 @@ public class DeliApp {
 
     private HashSet<Topping> handleRegularToppings() {
         HashSet<Topping> toppingSet = new HashSet<>();
-        ToppingChoice toppingChoice;
+        ToppingChoice choice;
         String regTopping = "";
-
+        boolean addmore = false;
         do {
-            toppingChoice = ui.getRegularTopping();
-            switch (toppingChoice) {
-                case Lettuce -> regTopping = "Lettuce";
-                case Peppers -> regTopping = "Peppers";
-                case Onions -> regTopping = "Onions";
-                case Tomatoes -> regTopping = "Tomatoes";
-                case Jalapenos -> regTopping = "Jalapenos";
-                case Cucumbers -> regTopping = "Cucumbers";
-                case Pickles -> regTopping = "Pickles";
-                case Guacamole -> regTopping = "Guacamole";
-                case Mushrooms -> regTopping = "Mushrooms";
-                case None -> regTopping = "";
-                case All -> {
+            choice = ui.getRegularTopping();
+            switch (choice) {
+                case None :
+                    toppingSet.clear();
+                    break;
+                case All :
                     toppingSet.clear();
                     toppingSet.addAll(handleAllToppings());
-                }
+                    break;
+                default :
+                    regTopping = switch (choice) {
+                        case Lettuce -> "Lettuce";
+                        case Peppers -> "Peppers";
+                        case Onions -> "Onions";
+                        case Tomatoes -> "Tomatoes";
+                        case Jalapenos -> "Jalapenos";
+                        case Cucumbers -> "Cucumbers";
+                        case Pickles -> "Pickles";
+                        case Guacamole -> "Guacamole";
+                        case Mushrooms -> "Mushrooms";
+                        default -> throw new IllegalStateException("Unexpected value: " + choice);
+                    };
+                    toppingSet.add(new RegularTopping(regTopping));
+                    addmore = ui.addMore();
             }
-            if (toppingChoice != ToppingChoice.None) toppingSet.add(new RegularTopping(regTopping));
-        } while (
-                ui.addMore() && toppingChoice != ToppingChoice.All && toppingChoice != ToppingChoice.None
-        );
+            if (choice != ToppingChoice.None) toppingSet.add(new RegularTopping(regTopping));
+        } while (addmore);
         return toppingSet;
     }
     private HashSet<RegularTopping> handleAllToppings() {
@@ -155,37 +174,41 @@ public class DeliApp {
         HashSet<Topping> sauces = new HashSet<>();
         ToppingChoice choice;
         String sauce = "";
+        boolean addmore = false;
         do {
             choice = ui.getSauces();
             switch (choice) {
-                case Mayo -> sauce = "Mayo";
-                case Mustard -> sauce = "Mustard";
-                case Ketchup -> sauce = "Ketchup";
-                case Ranch -> sauce = "Ranch";
-                case ThousandIslands -> sauce = "ThousandIslands";
-                case Vinaigrette -> sauce = "Vinaigrette";
-                case None -> sauce = "";
-                case All -> {
+                case None :
+                    sauces.clear();
+                    break;
+                case All :
                     sauces.clear();
                     sauces.addAll(handleAllSauces());
-                }
+                    break;
+                default:
+                    sauce = switch (choice) {
+                        case Mayo ->  "Mayo";
+                        case Mustard -> "Mustard";
+                        case Ketchup -> "Ketchup";
+                        case Ranch -> "Ranch";
+                        case ThousandIslands -> "ThousandIslands";
+                        case Vinaigrette -> "Vinaigrette";
+                        default -> throw new IllegalStateException("Unexpected value: " + choice);
+                    };
+                    sauces.add(new Sauces(sauce));
+                    addmore = ui.addMore();
             }
-            if (choice != ToppingChoice.None) sauces.add(new RegularTopping(sauce));
-        } while (
-                ui.addMore() &&
-                        choice != ToppingChoice.All &&
-                        choice != ToppingChoice.None
-        );
+        } while (addmore);
         return sauces;
     }
-    private HashSet<RegularTopping> handleAllSauces() {
-        HashSet<RegularTopping> sauces = new HashSet<>();
-        sauces.add(new RegularTopping("Mayo"));
-        sauces.add(new RegularTopping("Mustard"));
-        sauces.add(new RegularTopping("Ketchup"));
-        sauces.add(new RegularTopping("Ranch"));
-        sauces.add(new RegularTopping("Thousand Islands"));
-        sauces.add(new RegularTopping("Vinaigrette"));
+    private HashSet<Sauces> handleAllSauces() {
+        HashSet<Sauces> sauces = new HashSet<>();
+        sauces.add(new Sauces("Mayo"));
+        sauces.add(new Sauces("Mustard"));
+        sauces.add(new Sauces("Ketchup"));
+        sauces.add(new Sauces("Ranch"));
+        sauces.add(new Sauces("Thousand Islands"));
+        sauces.add(new Sauces("Vinaigrette"));
         return sauces;
     }
 
@@ -193,39 +216,67 @@ public class DeliApp {
         HashSet<Topping> sides = new HashSet<>();
         ToppingChoice choice;
         String side = "";
+        boolean addmore = false;
         // getSides
         do {
             choice = ui.getSides();
             switch (choice) {
-                case AuJus -> side = "Au Jus";
-                case Sauces -> side = "Sauces";
-                case None -> side = "";
-                case All -> {
+                case None:
                     sides.clear();
-                    sides.add(new RegularTopping("Au Jus"));
-                    sides.add(new RegularTopping("Sauces"));
-                }
+                    break;
+                case All :
+                    sides.clear();
+                    sides.add(new Side("Au Jus"));
+                    sides.add(new Side("Sauces"));
+                    break;
+                default:
+                    side = switch (choice) {
+                        case AuJus -> "Au Jus";
+                        case Sauces -> "Sauces";
+                        default -> throw new IllegalStateException("Unexpected value: " + choice);
+                    };
+                    sides.add(new Side(side));
+                    addmore = ui.addMore();
             }
-            if (choice != ToppingChoice.None) sides.add(new RegularTopping(side));
-        } while (
-                ui.addMore() &&
-                        choice != ToppingChoice.All &&
-                        choice != ToppingChoice.None
-        );
+        } while (addmore);
         return sides;
     }
 
     private Drink handleNewDrink() {
-        return new Drink(handleSize());
+        return ui.getDrink() ? new Drink(handleSize(ui.getDrinkSize()),
+                switch(ui.getDrinkFlavor()) {
+                    case Cola -> "Cola";
+                    case RootBeer -> "Root Beer";
+                    case Orange -> "Orange";
+                    case LemonLime -> "Lemon Lime";
+                    case GingerAle -> "Ginger Ale";
+                })
+                : null;
     }
 
     private Chips handleNewChips() {
-        return new Chips();
+        return ui.getChips() ? new Chips(
+                switch(ui.getChipBrand()) {
+                    case Lays -> "Lays";
+                    case Doritos -> "Doritos";
+                    case SunChips -> "SunChips";
+                    case KettleChips -> "KettleChips";
+                }) : null;
     }
 
     private void handleCheckout() {
+        OrderChoice choice = ui.getCheckout(customer);
+        switch (choice) {
+            case Receipt:
+                Receiptify receipt = new Receiptify();
+                receipt.writeToReceipt(customer);
+                break;
+            case CancelOrder:
+                break;
+        }
     }
 
     private void handleCancelOrder() {
+        customer.clearOrder();
     }
 }

@@ -15,4 +15,7 @@ public abstract class Order {
     public double getPrice() {
         return price;
     }
+    public double getTotalPrice() {
+        return price;
+    }
 }

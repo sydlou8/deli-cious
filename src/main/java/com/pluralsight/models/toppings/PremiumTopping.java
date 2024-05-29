@@ -1,6 +1,6 @@
 package com.pluralsight.models.toppings;
 
-public class PremiumTopping implements Topping, Sizeable {
+public class PremiumTopping implements Topping {
     // This should be any paid-for toppings like cheese and meat
     private String type;
     private String name;
@@ -45,5 +45,16 @@ public class PremiumTopping implements Topping, Sizeable {
     @Override
     public String getType() {
         return type;
+    }
+    @Override
+    public String toString() {
+        return "- " + getName() +
+                "\n\t\t" +
+                (isExtra ? "-- add Extra": "-- Standard")
+                + "\n";
+    }
+
+    public String getName() {
+        return name;
     }
 }

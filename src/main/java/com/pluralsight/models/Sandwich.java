@@ -1,15 +1,15 @@
 package com.pluralsight.models;
 
-import com.pluralsight.models.addedExtras.AddOn;
-import com.pluralsight.models.toppings.Topping;
+import com.pluralsight.models.toppings.*;
 
 import java.util.HashSet;
 
 public class Sandwich extends Order{
     String breadChoice;
+    boolean toasted;
     HashSet<Topping> toppings;
-    //HashSet<AddOn> addOns;
-    public Sandwich(int size, String breadChoice, HashSet<Topping> toppings) {
+
+    public Sandwich(int size, String breadChoice, boolean toasted, HashSet<Topping> toppings) {
         super(
                 size,
                 switch (size) {
@@ -20,6 +20,7 @@ public class Sandwich extends Order{
                 }
         );
         this.breadChoice = breadChoice;
+        this.toasted = toasted;
         this.toppings = toppings;
     }
 
@@ -27,11 +28,68 @@ public class Sandwich extends Order{
         return breadChoice;
     }
 
+    public boolean isToasted() {
+        return toasted;
+    }
+
     public HashSet<Topping> getToppings() {
         return toppings;
     }
 
-   public double getTotalPrice(){
-        return 0;
+    @Override
+    public double getTotalPrice() {
+        return super.getPrice() + toppings.stream()
+                .mapToDouble(topping -> topping.getPrice(super.getSize()))
+                .sum();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sandwich = new StringBuilder(String.format("%-33s %-9s $%4.2f\n",
+                "Sandwich",
+                switch(getSize()) {
+                    case 1 -> "Small";
+                    case 2 -> "Medium";
+                    case 3 -> "Large";
+                    default -> throw new IllegalStateException("Unexpected value: " + super.getSize());
+                },
+                this.getTotalPrice()));
+        sandwich.append("\tToppings: \n");
+        sandwich.append("\tPremium Toppings\n");
+        toppings.stream()
+                .filter(topping -> topping instanceof PremiumTopping)
+                .forEach(topping -> {
+                    sandwich.append("\t\t");
+                    sandwich.append(topping);
+                });
+        sandwich.append("\tRegular Toppings\n");
+        toppings.stream()
+                .filter(topping -> topping instanceof RegularTopping)
+                .filter(topping -> !topping.getType().isBlank())
+                .forEach(topping -> {
+                    sandwich.append("\t\t");
+                    sandwich.append(topping);
+                });
+        if(toppings.stream().filter(topping -> topping instanceof RegularTopping).toList().isEmpty()) sandwich.append("\t\tNone\n");
+        sandwich.append("\tSauces\n");
+        toppings.stream()
+                .filter(topping -> topping instanceof Sauces)
+                .filter(topping -> !topping.getType().isBlank())
+                .forEach(topping -> {
+                    sandwich.append("\t\t");
+                    sandwich.append(topping);
+                });
+        if(toppings.stream().filter(topping -> topping instanceof Sauces).toList().isEmpty()) sandwich.append("\t\tNone\n");
+        sandwich.append("\tSides\n");
+        toppings.stream()
+                .filter(topping -> topping instanceof Side)
+                .filter(topping -> !topping.getType().isBlank())
+                .forEach(topping -> {
+                    sandwich.append("\t\t");
+                    sandwich.append(topping);
+                });
+        if(toppings.stream().filter(topping -> topping instanceof Side).toList().isEmpty()) sandwich.append("\t\tNone\n");
+        sandwich.append(isToasted() ? "\tToasted" : "\tNot Toasted");
+        return sandwich.toString();
     }
 }

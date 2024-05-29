@@ -1,7 +1,7 @@
 package com.pluralsight.models.addedExtras;
 
 public class Drink extends AddOn {
-    public Drink(int size) {
+    public Drink(int size, String name) {
         super(
                 size,
                 switch(size) {
@@ -10,7 +10,19 @@ public class Drink extends AddOn {
                     case 3 -> 3.00;
                     default -> throw new IllegalStateException("Unexpected value: " + size);
                 },
-                "Drink"
+                name
         );
+    }
+    @Override
+    public String toString() {
+        return String.format("%-33s %-9s $%4.2f",
+                name,
+                switch(super.getSize()) {
+                    case 1 -> "Small";
+                    case 2 -> "Medium";
+                    case 3 -> "Large";
+                    default -> throw new IllegalStateException("Unexpected value: " + super.getSize());
+                },
+                super.getPrice());
     }
 }
