@@ -3,7 +3,7 @@ package com.pluralsight.models.addedExtras;
 import com.pluralsight.models.Order;
 
 public abstract class AddOn extends Order {
-    String name;
+    private String name;
 
     public AddOn(int size, double price, String name) {
         super(size, price);

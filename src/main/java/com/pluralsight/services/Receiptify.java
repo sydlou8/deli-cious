@@ -11,8 +11,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Receiptify {
-    LocalDateTime now = LocalDateTime.now();
-    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyyMMdd-hhmmss");
+    private LocalDateTime now = LocalDateTime.now();
+    private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyyMMdd-hhmmss");
     private final String FILENAME = now.format(dtf);
     private final String DIRECTORY = "receipts";
     private final String TAG = ".txt";

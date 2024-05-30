@@ -9,4 +9,5 @@ public enum OrderChoice {
     Receipt,
     CancelOrder,
     Exit,
+    AddSignature,
 }

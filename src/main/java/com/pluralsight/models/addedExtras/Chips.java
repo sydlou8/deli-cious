@@ -8,6 +8,6 @@ public class Chips extends AddOn {
 
     @Override
     public String toString () {
-        return String.format("%-43s $%4.2f", super.getName(), this.price);
+        return String.format("%-43s $%4.2f", getName(), this.price);
     }
 }

@@ -47,9 +47,10 @@ public class UserInterface {
                     """
                     Please make a selection:
                     \t[1] - Add Sandwich
-                    \t[2] - Add Drink
-                    \t[3] - Add Chips
-                    \t[4] - Checkout
+                    \t[2] - Add Signature Sandwich
+                    \t[3] - Add Drink
+                    \t[4] - Add Chips
+                    \t[5] - Checkout
                     \t[0] - Cancel Order
                     """);
             try {
@@ -57,9 +58,10 @@ public class UserInterface {
                 int choice = Integer.parseInt(userInput.nextLine().strip());
                 OrderChoice orderChoice = switch (choice) {
                     case 1 -> OrderChoice.AddSandwich;
-                    case 2 -> OrderChoice.AddDrink;
-                    case 3 -> OrderChoice.AddChips;
-                    case 4 -> OrderChoice.Checkout;
+                    case 2 -> OrderChoice.AddSignature;
+                    case 3 -> OrderChoice.AddDrink;
+                    case 4 -> OrderChoice.AddChips;
+                    case 5 -> OrderChoice.Checkout;
                     case 0 -> OrderChoice.CancelOrder;
                     default -> null;
                 };
@@ -70,12 +72,34 @@ public class UserInterface {
             }
         }
     }
+    public SignatureChoice getSignatureScreen() {
+        while(true) {
+            System.out.println("=".repeat(50));
+            System.out.println(" ".repeat(9) + "DELI-cious Signature Sandwiches:");
+            System.out.println("=".repeat(50));
+            System.out.print("""
+                    Please make a selection:
+                    \t[1] - BLT
+                    \t[2] - Philly Cheese Steak
+                    """);
+            try {
+                System.out.print("Your Selection: ");
+                int choice = Integer.parseInt(userInput.nextLine().strip());
+                SignatureChoice sizeChoice = switch (choice) {
+                    case 1 -> SignatureChoice.BLT;
+                    case 2 -> SignatureChoice.Philly;
+                    default -> null;
+                };
+                if (sizeChoice != null) return sizeChoice;
+                else err();
+            } catch (Exception _) {
+                err();
+            }
+        }
+    }
     public SandwichChoice getSandwichScreen() {
         while(true) {
             System.out.print(
-                    "=".repeat(50) + "\n" +
-                    " ".repeat(15) + "Build Your Sandwich!" + "\n" +
-                    "=".repeat(50) + "\n" +
                     """
                     Please make a BREAD selection:
                     \t[1] - White
@@ -122,7 +146,7 @@ public class UserInterface {
                     default -> null;
                 };
                 if (sizeChoice != null) return sizeChoice;
-                else System.out.println("Invalid Choice: Try Again.");
+                else err();
             } catch (Exception _) {
                 err();
             }
@@ -151,11 +175,11 @@ public class UserInterface {
     public ToppingChoice getRegularTopping() {
         while(true) {
             System.out.print(
-                    "=".repeat(50) + "\n" +
-                    " ".repeat(15) + "Build Your Sandwich!" + "\n" +
-                    "=".repeat(50) + "\n" +
+                    "-".repeat(50) + "\n" +
+                    " ".repeat(10) + "Build Your Sandwich: Toppings!" + "\n" +
+                    "-".repeat(50) + "\n" +
                     """
-                    Please make a BREAD selection:
+                    Please make a TOPPING selection:
                     \t[1]  - Lettuce
                     \t[2]  - Peppers
                     \t[3]  - Onions
@@ -186,18 +210,18 @@ public class UserInterface {
                     default -> null;
                 };
                 if (toppingChoice != null) return toppingChoice;
-                else System.out.println("Invalid Choice: Try Again.");
+                else err();
             } catch (Exception _) {
-                System.out.println("Invalid Choice: Try again.");
+                err();
             }
         }
     }
     public MeatChoice getMeat() {
         while(true) {
             System.out.print(
-                    "=".repeat(50) + "\n" +
+                    "-".repeat(50) + "\n" +
                     " ".repeat(12) + "Build Your Sandwich: Meat!" + "\n" +
-                    "=".repeat(50) + "\n" +
+                    "-".repeat(50) + "\n" +
                     """
                     Please make a MEAT selection:
                     \t[1] - Steak
@@ -220,9 +244,9 @@ public class UserInterface {
                     default -> null;
                 };
                 if (meatChoice != null) return meatChoice;
-                else System.out.println("Invalid Choice: Try Again.");
+                else err();
             } catch (Exception _) {
-                System.out.println("Invalid Choice: Try again.");
+                err();
             }
         }
     }
@@ -250,18 +274,18 @@ public class UserInterface {
                     default -> null;
                 };
                 if (cheeseChoice != null) return cheeseChoice;
-                else System.out.println("Invalid Choice: Try Again.");
+                else err();
             } catch (Exception _) {
-                System.out.println("Invalid Choice: Try again.");
+                err();
             }
         }
     }
     public SauceChoice getSauces() {
         while(true) {
             System.out.print(
-                    "=".repeat(50) + "\n" +
+                    "-".repeat(50) + "\n" +
                     " ".repeat(11) + "Build Your Sandwich: Sauces!" + "\n" +
-                    "=".repeat(50) + "\n" +
+                    "-".repeat(50) + "\n" +
                     """
                     Please make a SAUCE selection:
                     \t[1] - Mayo
@@ -368,7 +392,7 @@ public class UserInterface {
         while(true) {
             System.out.print(
                     "-".repeat(50) + "\n" +
-                    " ".repeat(15) + "Any Drinks?"+ "\n" +
+                    " ".repeat(15) + "Add Drinks!"+ "\n" +
                     "-".repeat(50) + "\n" +
                     """
                     Would you like a Drink?
@@ -381,9 +405,9 @@ public class UserInterface {
                 int choice = Integer.parseInt(userInput.nextLine().strip());
                 if (choice == 1) return true;
                 else if (choice == 2) return false;
-                else System.out.println("Invalid Choice: Try Again.");
+                else err();
             } catch (Exception _) {
-                System.out.println("Invalid Choice: Try again.");
+                err();
             }
         }
     }
@@ -407,9 +431,9 @@ public class UserInterface {
                     default -> null;
                 };
                 if (sizeChoice != null) return sizeChoice;
-                else System.out.println("Invalid Choice: Try Again.");
+                else err();
             } catch (Exception _) {
-                System.out.println("Invalid Choice: Try again.");
+                err();
             }
         }
     }
@@ -437,7 +461,7 @@ public class UserInterface {
                     default -> null;
                 }; if (drinkChoice != null) return drinkChoice;
             } catch (Exception _) {
-                System.out.println("Invalid Choice: Try again.");
+                err();
             }
         }
     }
@@ -445,7 +469,7 @@ public class UserInterface {
         while(true) {
             System.out.print(
                     "-".repeat(50) + "\n" +
-                    " ".repeat(15) + "Build Your Sandwich!" + "\n" +
+                    " ".repeat(20) + "Add Chips!" + "\n" +
                     "-".repeat(50) + "\n" +
                     """
                     Would you like Chips:
@@ -457,9 +481,9 @@ public class UserInterface {
                 int choice = Integer.parseInt(userInput.nextLine().strip());
                 if (choice == 1) return true;
                 else if (choice == 2) return false;
-                else System.out.println("Invalid Choice: Try Again.");
+                else err();
             } catch (Exception _) {
-                System.out.println("Invalid Choice: Try again.");
+                err();
             }
         }
     }
@@ -485,9 +509,9 @@ public class UserInterface {
                     default -> null;
                 };
                 if (chipChoice != null) return chipChoice;
-                else System.out.println("Invalid Choice: Try Again.");
+                else err();
             } catch (Exception _) {
-                System.out.println("Invalid Choice: Try again.");
+                err();
             }
         }
     }
@@ -495,9 +519,9 @@ public class UserInterface {
     public OrderChoice getCheckout(Customer customer) {
         while(true) {
             System.out.print(
-                    "-".repeat(50) + "\n" +
+                    "=".repeat(50) + "\n" +
                     " ".repeat(21) + "Checkout" + "\n" +
-                    "-".repeat(50) + "\n" +
+                    "=".repeat(50) + "\n" +
                     customer.toString() + "\n" +
                     """
                     Complete or Cancel Order:
@@ -513,9 +537,9 @@ public class UserInterface {
                     default -> null;
                 };
                 if (orderChoice != null) return orderChoice;
-                else System.out.println("Invalid Choice: Try Again.");
+                else err();
             } catch (Exception _) {
-                System.out.println("Invalid Choice: Try again.");
+                err();
             }
         }
     }
@@ -530,9 +554,9 @@ public class UserInterface {
                 int choice = Integer.parseInt(userInput.nextLine().strip());
                 if (choice == 1) return true;
                 else if (choice == 2) return false;
-                else System.out.println("Invalid Choice: Try Again.");
+                else err();
             } catch (Exception _) {
-                System.out.println("Invalid Choice: Try again.");
+                err();
             }
         }
     }

@@ -16,13 +16,13 @@ public class Drink extends AddOn {
     @Override
     public String toString() {
         return String.format("%-33s %-9s $%4.2f",
-                name,
-                switch(super.getSize()) {
+                getName(),
+                switch(getSize()) {
                     case 1 -> "Small";
                     case 2 -> "Medium";
                     case 3 -> "Large";
                     default -> throw new IllegalStateException("Unexpected value: " + super.getSize());
                 },
-                super.getPrice());
+                getPrice());
     }
 }

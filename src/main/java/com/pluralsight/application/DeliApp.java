@@ -2,6 +2,9 @@ package com.pluralsight.application;
 
 import com.pluralsight.models.*;
 import com.pluralsight.models.addedExtras.*;
+import com.pluralsight.models.sandwiches.BLT;
+import com.pluralsight.models.sandwiches.Philly;
+import com.pluralsight.models.sandwiches.Sandwich;
 import com.pluralsight.models.toppings.*;
 import com.pluralsight.services.Receiptify;
 import com.pluralsight.ui.enumerations.CheeseChoice;
@@ -34,6 +37,7 @@ public class DeliApp {
             OrderChoice choice = ui.getOrderScreen();
             switch (choice) {
                 case AddSandwich -> customer.addToOrder(handleNewSandwich());
+                case AddSignature -> customer.addToOrder(handleSignatureSandwich());
                 case AddDrink -> customer.addToOrder(handleNewDrink());
                 case AddChips -> customer.addToOrder(handleNewChips());
                 case Checkout -> {
@@ -69,7 +73,13 @@ public class DeliApp {
 
         return new Sandwich(size, bread, isToasted, allToppings);
     }
-
+    private Sandwich handleSignatureSandwich() {
+        SignatureChoice choice = ui.getSignatureScreen();
+        return switch (choice) {
+            case BLT -> new BLT();
+            case Philly -> new Philly();
+        };
+    }
     private int handleSize(SizeChoice choice) {
         return switch (choice) {
             case Small -> 1;
@@ -86,7 +96,6 @@ public class DeliApp {
             case Wheat -> "Wheat";
             case Rye -> "Rye";
             case Wrap -> "Wrap";
-            default -> throw new IllegalStateException("Unexpected value: " + sandwichChoice);
         };
     }
     private boolean handleIsToasted() {
@@ -99,7 +108,6 @@ public class DeliApp {
             case CheeseChoice.Provolone -> "Provolone";
             case CheeseChoice.Cheddar -> "Cheddar";
             case CheeseChoice.Swiss -> "Swiss";
-            default -> throw new IllegalStateException("Unexpected value: " + choice);
         };
         // getIsExtra
         boolean isExtraCheese = ui.getIsExtra();
@@ -115,7 +123,6 @@ public class DeliApp {
             case RoastBeef -> "Roast Beef";
             case Chicken -> "Chicken";
             case Bacon -> "Bacon";
-            default -> throw new IllegalStateException("Unexpected value: " + choice);
         };
         // getIsExtra
         boolean isExtraMeat = ui.getIsExtra();
@@ -148,7 +155,7 @@ public class DeliApp {
                         case Pickles -> "Pickles";
                         case Guacamole -> "Guacamole";
                         case Mushrooms -> "Mushrooms";
-                        default -> throw new IllegalStateException("Unexpected value: " + choice);
+                        default -> "";
                     };
                     toppingSet.add(new RegularTopping(regTopping));
                     addmore = ui.addMore();
@@ -194,7 +201,7 @@ public class DeliApp {
                         case SauceChoice.Ranch -> "Ranch";
                         case SauceChoice.ThousandIslands -> "ThousandIslands";
                         case SauceChoice.Vinaigrette -> "Vinaigrette";
-                        default -> throw new IllegalStateException("Unexpected value: " + choice);
+                        default -> "";
                     };
                     sauces.add(new Sauces(sauce));
                     addmore = ui.addMore();
@@ -234,7 +241,7 @@ public class DeliApp {
                     side = switch (choice) {
                         case SideChoice.AuJus -> "Au Jus";
                         case SideChoice.Sauces -> "Sauces";
-                        default -> throw new IllegalStateException("Unexpected value: " + choice);
+                        default -> "";
                     };
                     sides.add(new Side(side));
                     addmore = ui.addMore();
