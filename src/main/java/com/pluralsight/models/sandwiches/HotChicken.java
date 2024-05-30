@@ -1,9 +1,6 @@
 package com.pluralsight.models.sandwiches;
 
-import com.pluralsight.models.toppings.PremiumTopping;
-import com.pluralsight.models.toppings.RegularTopping;
-import com.pluralsight.models.toppings.Sauces;
-import com.pluralsight.models.toppings.Topping;
+import com.pluralsight.models.toppings.*;
 
 import java.util.HashSet;
 
