@@ -3,6 +3,7 @@ package com.pluralsight.application;
 import com.pluralsight.models.*;
 import com.pluralsight.models.addedExtras.*;
 import com.pluralsight.models.sandwiches.BLT;
+import com.pluralsight.models.sandwiches.HotChicken;
 import com.pluralsight.models.sandwiches.Philly;
 import com.pluralsight.models.sandwiches.Sandwich;
 import com.pluralsight.models.toppings.*;
@@ -78,6 +79,7 @@ public class DeliApp {
         return switch (choice) {
             case BLT -> new BLT();
             case Philly -> new Philly();
+            case HotChicken -> new HotChicken();
         };
     }
     private int handleSize(SizeChoice choice) {

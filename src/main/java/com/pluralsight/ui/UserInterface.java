@@ -81,6 +81,7 @@ public class UserInterface {
                     Please make a selection:
                     \t[1] - BLT
                     \t[2] - Philly Cheese Steak
+                    \t[3] - Hot Chicken
                     """);
             try {
                 System.out.print("Your Selection: ");
@@ -88,6 +89,7 @@ public class UserInterface {
                 SignatureChoice sizeChoice = switch (choice) {
                     case 1 -> SignatureChoice.BLT;
                     case 2 -> SignatureChoice.Philly;
+                    case 3 -> SignatureChoice.HotChicken;
                     default -> null;
                 };
                 if (sizeChoice != null) return sizeChoice;
