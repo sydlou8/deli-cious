@@ -25,11 +25,13 @@ public class UserInterface {
             try {
                 System.out.print("Your Selection: ");
                 int choice = Integer.parseInt(userInput.nextLine().strip());
-                return switch (choice) {
+                OrderChoice orderChoice = switch (choice) {
                     case 1 -> OrderChoice.NewOrder;
                     case 0 -> OrderChoice.Exit;
-                    default -> throw new IllegalStateException("Unexpected value: " + choice);
+                    default -> null;
                 };
+                if (orderChoice != null) return orderChoice;
+                else System.out.println("Invalid Choice: Try Again.");
             } catch (Exception _) {
                 System.out.println("Invalid Choice: Try again.");
             }
@@ -53,14 +55,16 @@ public class UserInterface {
             try {
                 System.out.print("Your Selection: ");
                 int choice = Integer.parseInt(userInput.nextLine().strip());
-                return switch (choice) {
+                OrderChoice orderChoice = switch (choice) {
                     case 1 -> OrderChoice.AddSandwich;
                     case 2 -> OrderChoice.AddDrink;
                     case 3 -> OrderChoice.AddChips;
                     case 4 -> OrderChoice.Checkout;
                     case 0 -> OrderChoice.CancelOrder;
-                    default -> throw new IllegalStateException("Unexpected value: " + choice);
+                    default -> null;
                 };
+                if (orderChoice != null) return orderChoice;
+                else System.out.println("Invalid Choice: Try Again.");
             } catch (Exception _) {
                 err();
             }
@@ -82,19 +86,21 @@ public class UserInterface {
             try {
                 System.out.print("Your Selection: ");
                 int choice = Integer.parseInt(userInput.nextLine().strip());
-                return switch (choice) {
+                SandwichChoice sandwichChoice = switch (choice) {
                     case 1 -> SandwichChoice.White;
                     case 2 -> SandwichChoice.Wheat;
                     case 3 -> SandwichChoice.Rye;
                     case 4 -> SandwichChoice.Wrap;
-                    default -> throw new IllegalStateException("Unexpected value: " + choice);
+                    default -> null;
                 };
+                if (sandwichChoice != null) return sandwichChoice;
+                else System.out.println("Invalid Choice: Try Again.");
             } catch (Exception _) {
                 err();
             }
         }
     }
-    public UserChoice getSandwichSize() {
+    public SizeChoice getSandwichSize() {
         while(true) {
             System.out.print(
                     "=".repeat(50) + "\n" +
@@ -109,12 +115,14 @@ public class UserInterface {
             try {
                 System.out.print("Your Selection: ");
                 int choice = Integer.parseInt(userInput.nextLine().strip());
-                return switch (choice) {
-                    case 1 -> UserChoice.Small;
-                    case 2 -> UserChoice.Medium;
-                    case 3 -> UserChoice.Large;
-                    default -> throw new IllegalStateException("Unexpected value: " + choice);
+                SizeChoice sizeChoice = switch (choice) {
+                    case 1 -> SizeChoice.Small;
+                    case 2 -> SizeChoice.Medium;
+                    case 3 -> SizeChoice.Large;
+                    default -> null;
                 };
+                if (sizeChoice != null) return sizeChoice;
+                else System.out.println("Invalid Choice: Try Again.");
             } catch (Exception _) {
                 err();
             }
@@ -131,11 +139,9 @@ public class UserInterface {
             try {
                 System.out.print("Your Selection: ");
                 int choice = Integer.parseInt(userInput.nextLine().strip());
-                return switch (choice) {
-                    case 1 -> true;
-                    case 2 -> false;
-                    default -> throw new IllegalStateException("Unexpected value: " + choice);
-                };
+                if (choice == 1) return true;
+                else if (choice == 2) return false;
+                else System.out.println("Invalid Choice: Try Again.");
             } catch (Exception _) {
                 System.out.println("Invalid Choice: Try again.");
             }
@@ -165,7 +171,7 @@ public class UserInterface {
             try {
                 System.out.print("Your Selection: ");
                 int choice = Integer.parseInt(userInput.nextLine().strip());
-                return switch (choice) {
+                ToppingChoice toppingChoice = switch (choice) {
                     case 1 -> ToppingChoice.Lettuce;
                     case 2 -> ToppingChoice.Peppers;
                     case 3 -> ToppingChoice.Onions;
@@ -177,14 +183,16 @@ public class UserInterface {
                     case 9 -> ToppingChoice.Mushrooms;
                     case 10 -> ToppingChoice.None;
                     case 11 -> ToppingChoice.All;
-                    default -> throw new IllegalStateException("Unexpected value: " + choice);
+                    default -> null;
                 };
+                if (toppingChoice != null) return toppingChoice;
+                else System.out.println("Invalid Choice: Try Again.");
             } catch (Exception _) {
                 System.out.println("Invalid Choice: Try again.");
             }
         }
     }
-    public ToppingChoice getMeat() {
+    public MeatChoice getMeat() {
         while(true) {
             System.out.print(
                     "=".repeat(50) + "\n" +
@@ -202,21 +210,23 @@ public class UserInterface {
             try {
                 System.out.print("Your Selection: ");
                 int choice = Integer.parseInt(userInput.nextLine().strip());
-                return switch (choice) {
-                    case 1 -> ToppingChoice.Steak;
-                    case 2 -> ToppingChoice.Ham;
-                    case 3 -> ToppingChoice.Salami;
-                    case 4 -> ToppingChoice.RoastBeef;
-                    case 5 -> ToppingChoice.Chicken;
-                    case 6 -> ToppingChoice.Bacon;
-                    default -> throw new IllegalStateException("Unexpected value: " + choice);
+                MeatChoice meatChoice = switch (choice) {
+                    case 1 -> MeatChoice.Steak;
+                    case 2 -> MeatChoice.Ham;
+                    case 3 -> MeatChoice.Salami;
+                    case 4 -> MeatChoice.RoastBeef;
+                    case 5 -> MeatChoice.Chicken;
+                    case 6 -> MeatChoice.Bacon;
+                    default -> null;
                 };
+                if (meatChoice != null) return meatChoice;
+                else System.out.println("Invalid Choice: Try Again.");
             } catch (Exception _) {
                 System.out.println("Invalid Choice: Try again.");
             }
         }
     }
-    public ToppingChoice getCheese() {
+    public CheeseChoice getCheese() {
         while(true) {
             System.out.print(
                     "-".repeat(50) + "\n" +
@@ -232,19 +242,21 @@ public class UserInterface {
             try {
                 System.out.print("Your Selection: ");
                 int choice = Integer.parseInt(userInput.nextLine().strip());
-                return switch (choice) {
-                    case 1 -> ToppingChoice.American;
-                    case 2 -> ToppingChoice.Provolone;
-                    case 3 -> ToppingChoice.Cheddar;
-                    case 4 -> ToppingChoice.Swiss;
-                    default -> throw new IllegalStateException("Unexpected value: " + choice);
+                CheeseChoice cheeseChoice = switch (choice) {
+                    case 1 -> CheeseChoice.American;
+                    case 2 -> CheeseChoice.Provolone;
+                    case 3 -> CheeseChoice.Cheddar;
+                    case 4 -> CheeseChoice.Swiss;
+                    default -> null;
                 };
+                if (cheeseChoice != null) return cheeseChoice;
+                else System.out.println("Invalid Choice: Try Again.");
             } catch (Exception _) {
                 System.out.println("Invalid Choice: Try again.");
             }
         }
     }
-    public ToppingChoice getSauces() {
+    public SauceChoice getSauces() {
         while(true) {
             System.out.print(
                     "=".repeat(50) + "\n" +
@@ -264,23 +276,25 @@ public class UserInterface {
             try {
                 System.out.print("Your Selection: ");
                 int choice = Integer.parseInt(userInput.nextLine().strip());
-                return switch (choice) {
-                    case 1 -> ToppingChoice.Mayo;
-                    case 2 -> ToppingChoice.Mustard;
-                    case 3 -> ToppingChoice.Ketchup;
-                    case 4 -> ToppingChoice.Ranch;
-                    case 5 -> ToppingChoice.ThousandIslands;
-                    case 6 -> ToppingChoice.Vinaigrette;
-                    case 7 -> ToppingChoice.None;
-                    case 8 -> ToppingChoice.All;
-                    default -> throw new IllegalStateException("Unexpected value: " + choice);
+                SauceChoice sauceChoice = switch (choice) {
+                    case 1 -> SauceChoice.Mayo;
+                    case 2 -> SauceChoice.Mustard;
+                    case 3 -> SauceChoice.Ketchup;
+                    case 4 -> SauceChoice.Ranch;
+                    case 5 -> SauceChoice.ThousandIslands;
+                    case 6 -> SauceChoice.Vinaigrette;
+                    case 7 -> SauceChoice.None;
+                    case 8 -> SauceChoice.All;
+                    default -> null;
                 };
+                if (sauceChoice != null) return sauceChoice;
+                else System.out.println("Invalid Choice: Try Again.");
             } catch (Exception _) {
                 System.out.println("Invalid Choice: Try again.");
             }
         }
     }
-    public ToppingChoice getSides() {
+    public SideChoice getSides() {
         while(true) {
             System.out.print(
                     "-".repeat(50) + "\n" +
@@ -296,13 +310,15 @@ public class UserInterface {
             try {
                 System.out.print("Your Selection: ");
                 int choice = Integer.parseInt(userInput.nextLine().strip());
-                return switch (choice) {
-                    case 1 -> ToppingChoice.AuJus;
-                    case 2 -> ToppingChoice.Sauces;
-                    case 3 -> ToppingChoice.None;
-                    case 4 -> ToppingChoice.All;
-                    default -> throw new IllegalStateException("Unexpected value: " + choice);
+                SideChoice sideChoice = switch (choice) {
+                    case 1 -> SideChoice.AuJus;
+                    case 2 -> SideChoice.Sauces;
+                    case 3 -> SideChoice.None;
+                    case 4 -> SideChoice.All;
+                    default -> null;
                 };
+                if (sideChoice != null) return sideChoice;
+                else System.out.println("Invalid Choice: Try Again.");
             } catch (Exception _) {
                 System.out.println("Invalid Choice: Try again.");
             }
@@ -320,7 +336,9 @@ public class UserInterface {
             try {
                 System.out.print("Your Selection: ");
                 int choice = Integer.parseInt(userInput.nextLine().strip());
-                return choice == 1;
+                if (choice == 1) return true;
+                else if (choice == 2) return false;
+                else System.out.println("Invalid Choice: Try Again.");
             } catch (Exception _) {
                 System.out.println("Invalid Choice: Try again.");
             }
@@ -337,14 +355,15 @@ public class UserInterface {
             try {
                 System.out.print("Your Selection: ");
                 int choice = Integer.parseInt(userInput.nextLine().strip());
-                return choice == 1;
+                if (choice == 1) return true;
+                else if (choice == 2) return false;
+                else System.out.println("Invalid Choice: Try Again.");
             } catch (Exception _) {
                 System.out.println("Invalid Choice: Try again.");
             }
         }
     }
 
-    // add Drink Flavor
     public boolean getDrink() {
         while(true) {
             System.out.print(
@@ -360,13 +379,15 @@ public class UserInterface {
             try {
                 System.out.print("Your Selection: ");
                 int choice = Integer.parseInt(userInput.nextLine().strip());
-                return choice == 1;
+                if (choice == 1) return true;
+                else if (choice == 2) return false;
+                else System.out.println("Invalid Choice: Try Again.");
             } catch (Exception _) {
                 System.out.println("Invalid Choice: Try again.");
             }
         }
     }
-    public UserChoice getDrinkSize() {
+    public SizeChoice getDrinkSize() {
         while (true) {
             System.out.print(
                     """
@@ -379,12 +400,14 @@ public class UserInterface {
             try {
                 System.out.print("Your Selection: ");
                 int choice = Integer.parseInt(userInput.nextLine().strip());
-                return switch (choice) {
-                    case 1 -> UserChoice.Small;
-                    case 2 -> UserChoice.Medium;
-                    case 3 -> UserChoice.Large;
-                    default -> throw new IllegalStateException("Unexpected value: " + choice);
+                SizeChoice sizeChoice = switch (choice) {
+                    case 1 -> SizeChoice.Small;
+                    case 2 -> SizeChoice.Medium;
+                    case 3 -> SizeChoice.Large;
+                    default -> null;
                 };
+                if (sizeChoice != null) return sizeChoice;
+                else System.out.println("Invalid Choice: Try Again.");
             } catch (Exception _) {
                 System.out.println("Invalid Choice: Try again.");
             }
@@ -405,14 +428,14 @@ public class UserInterface {
             try {
                 System.out.print("Your Selection: ");
                 int choice = Integer.parseInt(userInput.nextLine().strip());
-                return switch (choice) {
+                DrinkChoice drinkChoice = switch (choice) {
                     case 1 -> DrinkChoice.Cola;
                     case 2 -> DrinkChoice.RootBeer;
                     case 3 -> DrinkChoice.Orange;
                     case 4 -> DrinkChoice.LemonLime;
                     case 5 -> DrinkChoice.GingerAle;
-                    default -> throw new IllegalStateException("Unexpected value: " + choice);
-                };
+                    default -> null;
+                }; if (drinkChoice != null) return drinkChoice;
             } catch (Exception _) {
                 System.out.println("Invalid Choice: Try again.");
             }
@@ -432,7 +455,9 @@ public class UserInterface {
             try {
                 System.out.print("Your Selection: ");
                 int choice = Integer.parseInt(userInput.nextLine().strip());
-                return choice == 1;
+                if (choice == 1) return true;
+                else if (choice == 2) return false;
+                else System.out.println("Invalid Choice: Try Again.");
             } catch (Exception _) {
                 System.out.println("Invalid Choice: Try again.");
             }
@@ -452,13 +477,15 @@ public class UserInterface {
             try {
                 System.out.print("Your Selection: ");
                 int choice = Integer.parseInt(userInput.nextLine().strip());
-                return switch (choice) {
+                ChipChoice chipChoice = switch (choice) {
                     case 1 -> ChipChoice.Lays;
                     case 2 -> ChipChoice.Doritos;
                     case 3 -> ChipChoice.SunChips;
                     case 4 -> ChipChoice.KettleChips;
-                    default -> throw new IllegalStateException("Unexpected value: " + choice);
+                    default -> null;
                 };
+                if (chipChoice != null) return chipChoice;
+                else System.out.println("Invalid Choice: Try Again.");
             } catch (Exception _) {
                 System.out.println("Invalid Choice: Try again.");
             }
@@ -480,11 +507,13 @@ public class UserInterface {
             try {
                 System.out.print("Your Selection: ");
                 int choice = Integer.parseInt(userInput.nextLine().strip());
-                return switch (choice) {
+                OrderChoice orderChoice = switch (choice) {
                     case 1 -> OrderChoice.Receipt;
                     case 2 -> OrderChoice.CancelOrder;
-                    default -> throw new IllegalStateException("Unexpected value: " + choice);
+                    default -> null;
                 };
+                if (orderChoice != null) return orderChoice;
+                else System.out.println("Invalid Choice: Try Again.");
             } catch (Exception _) {
                 System.out.println("Invalid Choice: Try again.");
             }
@@ -499,7 +528,9 @@ public class UserInterface {
             System.out.print("Your Selection: ");
             try {
                 int choice = Integer.parseInt(userInput.nextLine().strip());
-                return choice == 1;
+                if (choice == 1) return true;
+                else if (choice == 2) return false;
+                else System.out.println("Invalid Choice: Try Again.");
             } catch (Exception _) {
                 System.out.println("Invalid Choice: Try again.");
             }

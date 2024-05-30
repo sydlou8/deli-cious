@@ -4,6 +4,7 @@ import com.pluralsight.models.*;
 import com.pluralsight.models.addedExtras.*;
 import com.pluralsight.models.toppings.*;
 import com.pluralsight.services.Receiptify;
+import com.pluralsight.ui.enumerations.CheeseChoice;
 import com.pluralsight.ui.UserInterface;
 import com.pluralsight.ui.enumerations.*;
 
@@ -69,7 +70,7 @@ public class DeliApp {
         return new Sandwich(size, bread, isToasted, allToppings);
     }
 
-    private int handleSize(UserChoice choice) {
+    private int handleSize(SizeChoice choice) {
         return switch (choice) {
             case Small -> 1;
             case Medium -> 2;
@@ -92,12 +93,12 @@ public class DeliApp {
         return ui.getIsToasted();
     }
     private PremiumTopping handleCheeseChoice() {
-        ToppingChoice choice = ui.getCheese();
+        CheeseChoice choice = ui.getCheese();
         String cheese = switch (choice) {
-            case American -> "American";
-            case Provolone -> "Provolone";
-            case Cheddar -> "Cheddar";
-            case Swiss -> "Swiss";
+            case CheeseChoice.American -> "American";
+            case CheeseChoice.Provolone -> "Provolone";
+            case CheeseChoice.Cheddar -> "Cheddar";
+            case CheeseChoice.Swiss -> "Swiss";
             default -> throw new IllegalStateException("Unexpected value: " + choice);
         };
         // getIsExtra
@@ -106,7 +107,7 @@ public class DeliApp {
         return new PremiumTopping("Cheese", cheese, isExtraCheese);
     }
     private PremiumTopping handleMeatChoice() {
-        ToppingChoice choice = ui.getMeat();
+        MeatChoice choice = ui.getMeat();
         String meat = switch (choice) {
             case Steak -> "Steak";
             case Ham -> "Ham";
@@ -172,7 +173,7 @@ public class DeliApp {
 
     private HashSet<Topping> handleSauces() {
         HashSet<Topping> sauces = new HashSet<>();
-        ToppingChoice choice;
+        SauceChoice choice;
         String sauce = "";
         boolean addmore = false;
         do {
@@ -187,12 +188,12 @@ public class DeliApp {
                     break;
                 default:
                     sauce = switch (choice) {
-                        case Mayo ->  "Mayo";
-                        case Mustard -> "Mustard";
-                        case Ketchup -> "Ketchup";
-                        case Ranch -> "Ranch";
-                        case ThousandIslands -> "ThousandIslands";
-                        case Vinaigrette -> "Vinaigrette";
+                        case SauceChoice.Mayo ->  "Mayo";
+                        case SauceChoice.Mustard -> "Mustard";
+                        case SauceChoice.Ketchup -> "Ketchup";
+                        case SauceChoice.Ranch -> "Ranch";
+                        case SauceChoice.ThousandIslands -> "ThousandIslands";
+                        case SauceChoice.Vinaigrette -> "Vinaigrette";
                         default -> throw new IllegalStateException("Unexpected value: " + choice);
                     };
                     sauces.add(new Sauces(sauce));
@@ -214,7 +215,7 @@ public class DeliApp {
 
     private HashSet<Topping> handleSides() {
         HashSet<Topping> sides = new HashSet<>();
-        ToppingChoice choice;
+        SideChoice choice;
         String side = "";
         boolean addmore = false;
         // getSides
@@ -231,8 +232,8 @@ public class DeliApp {
                     break;
                 default:
                     side = switch (choice) {
-                        case AuJus -> "Au Jus";
-                        case Sauces -> "Sauces";
+                        case SideChoice.AuJus -> "Au Jus";
+                        case SideChoice.Sauces -> "Sauces";
                         default -> throw new IllegalStateException("Unexpected value: " + choice);
                     };
                     sides.add(new Side(side));

@@ -1,10 +1,6 @@
 package com.pluralsight.ui.enumerations;
 
-public enum UserChoice{
-    // Boolean
-    Yes,
-    No,
-
+public enum SizeChoice {
     // Size
     Small,
     Medium,
