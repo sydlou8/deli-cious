@@ -50,7 +50,9 @@ public class DeliApp {
                     return;
                 }
             }
-            if (!ui.continueChoice()) return;
+            if (!ui.continueChoice()) {
+                handleContintueToCheckout();
+            }
         }
 
     }
@@ -288,5 +290,14 @@ public class DeliApp {
 
     private void handleCancelOrder() {
         customer.clearOrder();
+    }
+    private void handleContintueToCheckout() {
+        boolean choice = ui.continueToCheckout();
+        if (choice) {
+            handleCheckout();
+        } else {
+            handleCancelOrder();
+            System.exit(0);
+        }
     }
 }

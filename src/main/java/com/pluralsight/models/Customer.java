@@ -32,7 +32,7 @@ public class Customer {
             sb.append("\n");
             sb.append(order.toString());
         });
-        sb.append("\n" + ".".repeat(50) + "\n");
+        sb.append("\n").append(".".repeat(50)).append("\n");
         sb.append(String.format("%-44s", "Total"));
         sb.append("$").append(String.format("%4.2f", this.getTotalPrice()));
         return sb.toString();

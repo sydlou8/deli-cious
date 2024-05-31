@@ -562,4 +562,20 @@ public class UserInterface {
             }
         }
     }
+    public boolean continueToCheckout() {
+        while (true) {
+            System.out.println("Continue to Checkout or Exit program?");
+            System.out.println("\t[1] - Checkout");
+            System.out.println("\t[0] - Exit Program");
+            System.out.print("Your Selection: ");
+            try {
+                int choice = Integer.parseInt(userInput.nextLine().strip());
+                if (choice == 1) return true;
+                else if (choice == 2) return false;
+                else err();
+            } catch (Exception _) {
+                err();
+            }
+        }
+    }
 }
